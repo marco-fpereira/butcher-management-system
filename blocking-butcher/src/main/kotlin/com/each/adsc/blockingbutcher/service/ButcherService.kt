@@ -13,7 +13,7 @@ class ButcherService {
     private lateinit var butcherRepository: ButcherRepository
 
     fun getByMeatName(meatName: String) : ResponseEntity<Meat> {
-        val meatByName = butcherRepository.getMeatByName(meatName)
+        val meatByName = butcherRepository.getByName(meatName)
         return if (meatByName.isPresent) ResponseEntity.ok(meatByName.get())
         else ResponseEntity.notFound().build()
     }

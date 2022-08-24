@@ -10,5 +10,5 @@ import java.util.Optional
 @EnableScan
 interface ButcherRepository : CrudRepository<Meat, String> {
 
-    fun getMeatByName(meatName: String) : Optional<Meat>
+    fun getByName(meatName: String) : Optional<Meat>
 }
