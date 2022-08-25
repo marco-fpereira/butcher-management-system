@@ -1,14 +1,10 @@
 package com.each.adsc.blockingbutcher.repository
 
-import com.each.adsc.blockingbutcher.model.Meat
+import com.each.adsc.blockingbutcher.model.Purchase
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.Optional
 
 @Repository
 @EnableScan
-interface ButcherRepository : CrudRepository<Meat, String> {
-
-    fun findByMeatName(meatName: String) : Optional<Meat>
-}
+interface PurchaseRepository : CrudRepository<Purchase, String>
