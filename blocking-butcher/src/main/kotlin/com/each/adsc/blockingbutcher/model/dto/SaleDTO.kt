@@ -8,20 +8,20 @@ import javax.validation.constraints.PositiveOrZero
 
 data class SaleDTO(
     @JsonProperty("sale_id")
-    val saleId: String? = null,
+    var saleId: String? = null,
 
     @JsonProperty("amount")
     @field:PositiveOrZero
-    val amount: Double,
+    val amount: Double = 0.0,
 
     @JsonProperty("total_price")
     @field:PositiveOrZero
-    val totalPrice: Double,
+    val totalPrice: Double = 0.0,
 
     @JsonProperty("type_of_cut")
     @field:NotBlank
     val typeOfCut: TypeOfCut,
 
     @JsonProperty("timestamp")
-    val saleTimestamp: LocalDateTime
+    val saleTimestamp: LocalDateTime = LocalDateTime.now()
 )

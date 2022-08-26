@@ -19,7 +19,7 @@ class PurchaseService {
     private lateinit var butcherRepository: ButcherRepository
 
     fun purchaseMeat(purchaseDTO: PurchaseDTO) {
-        val optionalMeat: Optional<Meat> = butcherRepository.findByMeatName(purchaseDTO.meatName)
+        val optionalMeat: Optional<Meat> = butcherRepository.findById(purchaseDTO.meatName)
         if(optionalMeat.isPresent) {
             val meat = optionalMeat.get()
             meat.availableAmountInKilograms = meat.availableAmountInKilograms + purchaseDTO.amountBought

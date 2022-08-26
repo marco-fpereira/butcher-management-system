@@ -7,6 +7,7 @@ import com.each.adsc.blockingbutcher.utils.ObjectParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ButcherService {
@@ -15,7 +16,7 @@ class ButcherService {
     private lateinit var butcherRepository: ButcherRepository
 
     fun getByMeatName(meatName: String) : ResponseEntity<MeatDTO> {
-        val meatByName = butcherRepository.findByMeatName(meatName)
+        val meatByName: Optional<Meat> = butcherRepository.findById(meatName)
         return if (meatByName.isPresent) {
             val meatDTO = ObjectParser.meatToMeatDTO(meatByName.get())
             ResponseEntity.ok(meatDTO)

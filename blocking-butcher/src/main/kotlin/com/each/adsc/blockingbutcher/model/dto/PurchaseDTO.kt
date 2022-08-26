@@ -7,7 +7,7 @@ import javax.validation.constraints.PositiveOrZero
 
 data class PurchaseDTO(
     @JsonProperty("purchase_id")
-    val purchaseId: String? = null,
+    var purchaseId: String? = null,
 
     @JsonProperty("meat_name")
     @field:NotBlank

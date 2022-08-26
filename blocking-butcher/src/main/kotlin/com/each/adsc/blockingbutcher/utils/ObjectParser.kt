@@ -9,8 +9,7 @@ class ObjectParser {
     companion object Parser {
         fun meatToMeatDTO(meat: Meat) : MeatDTO {
             return MeatDTO(
-                meatId = meat.meatId,
-                name = meat.meatName,
+                name = meat.meatName.orEmpty(),
                 animalOfOrigin = meat.animalOfOrigin,
                 price = meat.price,
                 availableAmountInKilograms = meat.availableAmountInKilograms
@@ -24,7 +23,7 @@ class ObjectParser {
                 animalOfOrigin = purchaseDTO.animalOfOrigin,
                 purchasePriceInKilograms = purchaseDTO.purchasePriceInKilograms,
                 amountBought = purchaseDTO.amountBought,
-                purchaseTimestamp = purchaseDTO.purchaseTimestamp
+                purchaseTimestamp = purchaseDTO.purchaseTimestamp.toString()
             )
         }
 

@@ -5,9 +5,6 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.PositiveOrZero
 
 data class MeatDTO(
-    @JsonProperty("meat_id")
-    val meatId: String? = null,
-
     @JsonProperty("name")
     @field:NotBlank
     val name: String,
@@ -18,9 +15,9 @@ data class MeatDTO(
 
     @JsonProperty("price")
     @field:PositiveOrZero
-    val price: Double,
+    var price: Double,
 
     @JsonProperty("available_amount_in_kilograms")
     @field:PositiveOrZero
-    val availableAmountInKilograms: Double
+    var availableAmountInKilograms: Double
 )
