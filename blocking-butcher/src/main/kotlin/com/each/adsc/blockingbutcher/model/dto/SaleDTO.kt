@@ -1,6 +1,6 @@
 package com.each.adsc.blockingbutcher.model.dto
 
-import com.each.adsc.blockingbutcher.model.TypeOfCut
+import com.each.adsc.blockingbutcher.model.dto.TypeOfCut
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import javax.validation.constraints.NotBlank
@@ -10,13 +10,17 @@ data class SaleDTO(
     @JsonProperty("sale_id")
     var saleId: String? = null,
 
-    @JsonProperty("amount")
+    @JsonProperty("meat_name")
+    @field:NotBlank
+    val meatName: String,
+
+    @JsonProperty("amount_in_kilograms")
     @field:PositiveOrZero
-    val amount: Double = 0.0,
+    val amount: Double,
 
     @JsonProperty("total_price")
     @field:PositiveOrZero
-    val totalPrice: Double = 0.0,
+    var totalPrice: Double = 0.0,
 
     @JsonProperty("type_of_cut")
     @field:NotBlank
@@ -25,3 +29,10 @@ data class SaleDTO(
     @JsonProperty("timestamp")
     val saleTimestamp: LocalDateTime = LocalDateTime.now()
 )
+
+enum class TypeOfCut {
+    GROUND,
+    MINCED,
+    CUBED,
+    FILLET,
+}

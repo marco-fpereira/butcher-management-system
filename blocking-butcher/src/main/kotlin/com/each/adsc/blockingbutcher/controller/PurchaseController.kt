@@ -22,8 +22,7 @@ class PurchaseController {
     @PostMapping("/purchase_meat")
     fun insertNewMeat(@RequestBody purchaseDTO: PurchaseDTO, result: BindingResult) : ResponseEntity<Any> {
         if (result.hasErrors()) return ErrorListAssembler.generateErrorList(result)
-        purchaseService.purchaseMeat(purchaseDTO)
+        return purchaseService.purchaseMeat(purchaseDTO)
 
-        return ResponseEntity(HttpStatus.CREATED)
     }
 }
