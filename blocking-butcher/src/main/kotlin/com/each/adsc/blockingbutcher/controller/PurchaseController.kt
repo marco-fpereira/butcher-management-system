@@ -4,7 +4,7 @@ import com.each.adsc.blockingbutcher.model.dto.PurchaseDTO
 import com.each.adsc.blockingbutcher.service.PurchaseService
 import com.each.adsc.blockingbutcher.utils.ErrorListAssembler
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
+import javax.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,7 +20,7 @@ class PurchaseController {
     private lateinit var purchaseService: PurchaseService
 
     @PostMapping("/purchase_meat")
-    fun insertNewMeat(@RequestBody purchaseDTO: PurchaseDTO, result: BindingResult) : ResponseEntity<Any> {
+    fun insertNewMeat(@RequestBody @Valid purchaseDTO: PurchaseDTO, result: BindingResult) : ResponseEntity<Any> {
         if (result.hasErrors()) return ErrorListAssembler.generateErrorList(result)
         return purchaseService.purchaseMeat(purchaseDTO)
 

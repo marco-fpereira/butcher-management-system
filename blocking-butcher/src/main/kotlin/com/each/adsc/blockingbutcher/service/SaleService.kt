@@ -60,7 +60,7 @@ class SaleService {
             amount = saleDTO.amount,
             meatName = saleDTO.meatName,
             totalPrice = saleDTO.amount*meatPrice,
-            typeOfCut = saleDTO.typeOfCut.name,
+            typeOfCut = saleDTO.typeOfCut,
             saleTimestamp = saleDTO.saleTimestamp.toString()
         )
 
