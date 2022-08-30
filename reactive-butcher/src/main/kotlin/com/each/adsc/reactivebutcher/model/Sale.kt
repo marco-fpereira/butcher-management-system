@@ -13,16 +13,16 @@ data class Sale(
     var saleId: String? = null,
 
     @get:DynamoDbAttribute("meat_name")
-    var meatName: String,
+    var meatName: String = "",
 
     @get:DynamoDbAttribute("amount")
-    val amount: Double,
+    val amount: Double = 0.0,
 
     @get:DynamoDbAttribute("total_price")
-    var totalPrice: Double,
+    var totalPrice: Double = 0.0,
 
     @get:DynamoDbAttribute("type_of_cut")
-    val typeOfCut: String,
+    val typeOfCut: String = "",
 
     @get:DynamoDbAttribute("timestamp")
     var saleTimestamp: String = LocalDateTime.now().toString()
