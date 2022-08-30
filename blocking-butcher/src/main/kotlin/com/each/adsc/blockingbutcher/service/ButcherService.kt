@@ -1,10 +1,13 @@
 package com.each.adsc.blockingbutcher.service
 
+import com.each.adsc.blockingbutcher.exception.ValueNotFoundException
 import com.each.adsc.blockingbutcher.model.Meat
 import com.each.adsc.blockingbutcher.model.dto.MeatDTO
+import com.each.adsc.blockingbutcher.model.dto.error.ErrorResponseDTO
 import com.each.adsc.blockingbutcher.repository.ButcherRepository
 import com.each.adsc.blockingbutcher.utils.ObjectParser
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
@@ -21,7 +24,7 @@ class ButcherService {
             val meatDTO = ObjectParser.meatToMeatDTO(meatByName.get())
             ResponseEntity.ok(meatDTO)
         }
-        else ResponseEntity.notFound().build()
+        else throw ValueNotFoundException(ex = ErrorResponseDTO(message = "There is not any meat named $meatName"))
     }
 
     fun getAllMeat(): List<MeatDTO> {

@@ -1,4 +1,4 @@
-package com.each.adsc.blockingbutcher.model.dto.error
+package com.each.adsc.reactivebutcher.model.dto.error
 
 import com.fasterxml.jackson.annotation.JsonInclude
 
