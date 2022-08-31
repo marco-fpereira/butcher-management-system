@@ -22,7 +22,7 @@ class ButcherService {
     fun getByMeatName(meatName: String) : Mono<MeatDTO> {
         val meatByName : Mono<Meat> = butcherRepository.findById(meatName)
             .switchIfEmpty{
-                Mono.error(ValueNotFoundException(ErrorResponseDTO(message = "There is not any ")))
+                Mono.error(ValueNotFoundException(ErrorResponseDTO(message = "There is not any meat with the given name")))
             }
         return meatByName.flatMap { meat ->
             Mono.just(ObjectParser.meatToMeatDTO(meat))

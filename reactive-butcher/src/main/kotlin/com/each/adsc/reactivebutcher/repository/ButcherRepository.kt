@@ -16,9 +16,6 @@ class ButcherRepository (
     @Value("\${aws.dynamodb.table.butcher}") private val tableName: String
 ){
 
-//    @Autowired
-//    private lateinit var client: DynamoDbEnhancedAsyncClient
-
     private val table = client.table(tableName, TableSchema.fromBean(Meat::class.java))
 
     fun findById(meatName: String): Mono<Meat> {

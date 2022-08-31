@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema
-import software.amazon.awssdk.enhanced.dynamodb.model.PutItemEnhancedRequest
 
 @Repository
 class SaleRepository(
@@ -16,8 +15,9 @@ class SaleRepository(
 
     private val table = client.table(tableName, TableSchema.fromBean(Sale::class.java))
 
-    fun save(sale: Sale): Mono<Sale> {
-        val putItem: PutItemEnhancedRequest<Sale> = PutItemEnhancedRequest.builder(Sale::class.java).item(sale).build()
-        return Mono.just(table.putItemWithResponse(putItem).get().attributes())
+    fun save(sale: Sale): Mono<Void> {
+//        val putItem: PutItemEnhancedRequest<Sale> = PutItemEnhancedRequest.builder(Sale::class.java).item(sale).build()
+//        return Mono.just(table.putItemWithResponse(putItem).get().attributes())
+        return Mono.fromFuture(table.putItem(sale))
     }
 }

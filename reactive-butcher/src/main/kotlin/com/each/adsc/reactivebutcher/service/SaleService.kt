@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
+import java.util.*
 
 @Service
 class SaleService {
@@ -25,7 +26,7 @@ class SaleService {
         return monoSaleDTO.flatMap { saleDTO ->
             val monoMeat = butcherRepository.findById(saleDTO.meatName)
             monoMeat.switchIfEmpty {
-                Mono.error { ValueNotFoundException(ErrorResponseDTO(message = "There is not any ")) }
+                Mono.error { ValueNotFoundException(ErrorResponseDTO(message = "There is not any meat with the given name")) }
             }
             monoMeat.flatMap { meat ->
                 if (meat.availableAmountInKilograms < saleDTO.amount) {
@@ -39,14 +40,13 @@ class SaleService {
                 meat.availableAmountInKilograms -= saleDTO.amount
                 butcherRepository.save(meat)
 
-                val monoSale = saleRepository.save(generateSale(saleDTO, meat.price))
-                monoSale.flatMap {savedSale ->
-                    Mono.just(updateSaleDTO(
-                        baseSaleDTO = saleDTO,
-                        saleId = savedSale.saleId.orEmpty(),
-                        totalPrice = savedSale.totalPrice
-                    ))
-                }
+                val sale = generateSale(saleDTO, meat.price)
+                saleRepository.save(sale)
+                Mono.just(updateSaleDTO(
+                    baseSaleDTO = saleDTO,
+                    saleId = sale.saleId.orEmpty(),
+                    totalPrice = sale.totalPrice
+                ))
             }
         }
     }
@@ -59,6 +59,7 @@ class SaleService {
 
     private fun generateSale(saleDTO: SaleDTO, meatPrice: Double) : Sale =
         Sale(
+            saleId = UUID.randomUUID().toString(),
             amount = saleDTO.amount,
             meatName = saleDTO.meatName,
             totalPrice = saleDTO.amount*meatPrice,
