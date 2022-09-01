@@ -26,17 +26,15 @@ class SaleService {
         return monoSaleDTO.flatMap { saleDTO ->
             val monoMeat = butcherRepository.findById(saleDTO.meatName)
             monoMeat.switchIfEmpty {
-                Mono.error { ValueNotFoundException(ErrorResponseDTO(message = "There is not any meat with the given name")) }
+                Mono.error { ValueNotFoundException(errorResponseDTO = ErrorResponseDTO(message = "There is not any meat with the given name")) }
             }
             monoMeat.flatMap { meat ->
-                if (meat.availableAmountInKilograms < saleDTO.amount) {
-                    Mono.error<PreconditionRequiredException> {
-                        PreconditionRequiredException(
-                            "The amount of meat you requested is not currently available. " +
-                                    "Current stock is ${meat.availableAmountInKilograms}."
-                        )
-                    }
-                }
+                if (meat.availableAmountInKilograms < saleDTO.amount)
+                    throw PreconditionRequiredException(
+                        message = "The amount of meat you requested is not currently available. " +
+                                "Current stock is ${meat.availableAmountInKilograms}."
+                    )
+
                 meat.availableAmountInKilograms -= saleDTO.amount
                 butcherRepository.save(meat)
 

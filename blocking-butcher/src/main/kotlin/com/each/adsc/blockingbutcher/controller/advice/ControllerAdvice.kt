@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class ControllerAdvice {
 
     @ExceptionHandler(ValueNotFoundException::class)
-    fun valueNotFoundHandler(ex: ErrorResponseDTO) : ResponseEntity<ValueNotFoundException> {
-        return ResponseEntity(ValueNotFoundException(ex), HttpStatus.NOT_FOUND)
+    fun valueNotFoundHandler(ex: ValueNotFoundException) : ResponseEntity<ErrorResponseDTO> {
+        return ResponseEntity(ex.errorResponseDTO, HttpStatus.NOT_FOUND)
     }
 }

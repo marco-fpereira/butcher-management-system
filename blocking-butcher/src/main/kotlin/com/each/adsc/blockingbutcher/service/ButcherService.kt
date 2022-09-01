@@ -24,7 +24,7 @@ class ButcherService {
             val meatDTO = ObjectParser.meatToMeatDTO(meatByName.get())
             ResponseEntity.ok(meatDTO)
         }
-        else throw ValueNotFoundException(ex = ErrorResponseDTO(message = "There is not any meat named $meatName"))
+        else throw ValueNotFoundException(errorResponseDTO = ErrorResponseDTO(message = "There is not any meat named $meatName"))
     }
 
     fun getAllMeat(): List<MeatDTO> {

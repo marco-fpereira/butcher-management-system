@@ -14,7 +14,7 @@ class ErrorListAssembler {
             result.fieldErrors.forEach {
                 fieldErrorList.add(ErrorResponseDTO(field = it.field, message = it.defaultMessage!!))
             }
-            return Mono.error{ PayloadBadRequestException(fieldErrorList) }
+            return Mono.error{ PayloadBadRequestException(errorResponseList = fieldErrorList) }
         }
     }
 }
