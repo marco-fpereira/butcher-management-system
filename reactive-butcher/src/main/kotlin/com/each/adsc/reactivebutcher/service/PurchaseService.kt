@@ -21,24 +21,21 @@ class PurchaseService {
 
     fun purchaseMeat(monoPurchaseDTO: Mono<PurchaseDTO>): Mono<MeatDTO> {
         return monoPurchaseDTO.flatMap { purchaseDTO ->
-            var monoMeat = butcherRepository.findById(purchaseDTO.meatName)
-            monoMeat = monoMeat.switchIfEmpty {
-                val meat = ObjectParser.purchaseDTOToMeat(purchaseDTO)
-                butcherRepository.save(meat)
-                purchaseRepository.save(ObjectParser.purchaseDTOToPurchase(purchaseDTO))
-                Mono.just(meat)
-            }
+            val monoMeat = butcherRepository.findByIdWithDefaultValue(
+                meatId = purchaseDTO.meatName,
+                defaultIfEmpty = ObjectParser.purchaseDTOToMeat(purchaseDTO, defaultMeat = true)
+            ).log()
 
             monoMeat.flatMap { meat ->
                 meat.availableAmountInKilograms = meat.availableAmountInKilograms + purchaseDTO.amountBought
-                meat.price = purchaseDTO.purchasePriceInKilograms
+                meat.price = purchaseDTO.purchasePriceInKilograms*1.35
 
-                butcherRepository.save(meat)
-                purchaseRepository.save(ObjectParser.purchaseDTOToPurchase(purchaseDTO))
+                butcherRepository.update(meat)
                 Mono.just(meat)
+            }.flatMap { meat ->
+                purchaseRepository.save(ObjectParser.purchaseDTOToPurchase(purchaseDTO))
+                Mono.just(ObjectParser.meatToMeatDTO(meat))
             }
-            monoMeat.flatMap { Mono.just(ObjectParser.meatToMeatDTO(it)) }
         }
-
     }
 }

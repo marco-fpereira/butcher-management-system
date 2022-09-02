@@ -27,13 +27,18 @@ class ObjectParser {
                 purchaseTimestamp = purchaseDTO.purchaseTimestamp.toString()
             )
 
-        fun purchaseDTOToMeat(purchaseDTO: PurchaseDTO) =
-            Meat(
+        fun purchaseDTOToMeat(
+            purchaseDTO: PurchaseDTO,
+            defaultMeat : Boolean = false
+        ) :Meat {
+            val availableAmount = if(defaultMeat) 0.0 else purchaseDTO.amountBought
+                    return Meat(
                 meatName = purchaseDTO.meatName,
                 animalOfOrigin = purchaseDTO.animalOfOrigin,
                 price = purchaseDTO.purchasePriceInKilograms*1.35,
-                availableAmountInKilograms = purchaseDTO.amountBought
+                availableAmountInKilograms = availableAmount
             )
+        }
 
     }
 }

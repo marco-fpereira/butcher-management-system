@@ -4,3 +4,5 @@ aws:
     region: "us-east-1"
     accesskey: "default_access_key"
     secretkey: "default_secret_key"
+server:
+  port: 8085
