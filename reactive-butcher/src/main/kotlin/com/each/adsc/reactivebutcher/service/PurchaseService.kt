@@ -8,7 +8,6 @@ import com.each.adsc.reactivebutcher.utils.ObjectParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Service
 class PurchaseService {
@@ -24,7 +23,7 @@ class PurchaseService {
             val monoMeat = butcherRepository.findByIdWithDefaultValue(
                 meatId = purchaseDTO.meatName,
                 defaultIfEmpty = ObjectParser.purchaseDTOToMeat(purchaseDTO, defaultMeat = true)
-            ).log()
+            )
 
             monoMeat.flatMap { meat ->
                 meat.availableAmountInKilograms = meat.availableAmountInKilograms + purchaseDTO.amountBought

@@ -11,7 +11,6 @@ import reactor.kotlin.core.publisher.toFlux
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient
 import software.amazon.awssdk.enhanced.dynamodb.Key
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema
-import java.util.concurrent.CompletableFuture
 
 @Repository
 class ButcherRepository (
@@ -21,7 +20,7 @@ class ButcherRepository (
 
     private val table = client.table(tableName, TableSchema.fromBean(Meat::class.java))
 
-    fun findById(meatId: String,): Mono<Meat> {
+    fun findById(meatId: String): Mono<Meat> {
         return Mono.fromFuture(table.getItem(getKeyBuild(meatId)))
     }
 

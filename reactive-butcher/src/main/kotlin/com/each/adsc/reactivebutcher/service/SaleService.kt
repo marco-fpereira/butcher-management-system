@@ -37,9 +37,12 @@ class SaleService {
 
                 meat.availableAmountInKilograms -= saleDTO.amount
                 butcherRepository.save(meat)
-
+                Mono.just(meat)
+            }.flatMap { meat ->
                 val sale = generateSale(saleDTO, meat.price)
                 saleRepository.save(sale)
+                Mono.just(sale)
+            }.flatMap { sale ->
                 Mono.just(updateSaleDTO(
                     baseSaleDTO = saleDTO,
                     saleId = sale.saleId.orEmpty(),

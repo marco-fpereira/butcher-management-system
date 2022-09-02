@@ -2,10 +2,9 @@ package com.each.adsc.reactivebutcher.utils
 
 import com.each.adsc.reactivebutcher.model.Meat
 import com.each.adsc.reactivebutcher.model.Purchase
-import com.each.adsc.reactivebutcher.model.Sale
 import com.each.adsc.reactivebutcher.model.dto.MeatDTO
 import com.each.adsc.reactivebutcher.model.dto.PurchaseDTO
-import com.each.adsc.reactivebutcher.model.dto.SaleDTO
+import java.util.*
 
 class ObjectParser {
     companion object Parser {
@@ -19,7 +18,7 @@ class ObjectParser {
 
         fun purchaseDTOToPurchase(purchaseDTO: PurchaseDTO) =
             Purchase(
-                purchaseId = purchaseDTO.purchaseId,
+                purchaseId = purchaseDTO.purchaseId ?: UUID.randomUUID().toString(),
                 meatName = purchaseDTO.meatName,
                 animalOfOrigin = purchaseDTO.animalOfOrigin,
                 purchasePriceInKilograms = purchaseDTO.purchasePriceInKilograms,
