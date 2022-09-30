@@ -1,7 +1,8 @@
 resource "aws_security_group" "http_access" {
-    provider = aws.us-east-1
-    name        = "http-access"
-    description = "Allow http access"
+    provider            = aws.us-east-1
+    name                = "http-access"
+    description         = "Allow http access"
+    vpc_id              = "vpc-03ca1ab2a269d2df6"
 
     ingress {
         description      = "HTTP access to instances"
@@ -40,10 +41,38 @@ resource "aws_security_group" "http_access" {
     }
 }
 
+resource "aws_security_group" "appdynamics_access" {
+    provider            = aws.us-east-1
+    name                = "appdynamics_access"
+    description         = "Allow access to appdynamics from application instances"
+    vpc_id              = "vpc-03ca1ab2a269d2df6"
+    
+    ingress {
+        description     = "access to appdynamics"
+        from_port       = 8000
+        to_port         = 8000
+        protocol        = "tcp"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port        = 0
+        to_port          = 0
+        protocol         = "-1"
+        cidr_blocks      = ["0.0.0.0/0"]
+        ipv6_cidr_blocks = ["::/0"]
+    }
+
+    tags = {
+        Name = "AppDynamics"
+    }
+}
+
 resource "aws_security_group" "ssh_access-1" {
-    provider = aws.us-east-1
-    name        = "ssh_access"
-    description = "Allow ssh  access"
+    provider            = aws.us-east-1
+    name                = "ssh_access"
+    description         = "Allow ssh  access"
+    vpc_id              = "vpc-03ca1ab2a269d2df6"
 
     ingress {
         description      = "SSH access to instances"
