@@ -67,7 +67,7 @@ resource "aws_instance" "prd-blocking-application" {
     }
   }
 
-  user_data                 = "${file("user-data-app.sh")}"
+  user_data                 = "${file("user-data-blocking-app.sh")}"
   depends_on = [aws_security_group.http_access, aws_security_group.ssh_access-1]
 }
 
@@ -99,7 +99,7 @@ resource "aws_instance" "prd-blocking-application" {
     }
   }
 
-  user_data                 = "${file("user-data-app.sh")}"
+  user_data                 = "${file("user-data-reactive-app.sh")}"
   depends_on = [aws_security_group.http_access, aws_security_group.ssh_access-1]
 
 }
