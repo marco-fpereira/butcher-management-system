@@ -9,7 +9,7 @@ newgrp docker
 sudo systemctl start docker
 sudo systemctl enable docker
 docker run hello-world
-mkdir ~/deploy
+mkdir -p ~/deploy
 cd ~/deploy
 echo -e \
 "version: '3.8' \n\
@@ -26,3 +26,19 @@ services: \n\
 sudo apt-get install -y docker-compose-plugin
 docker compose up -d
 docker ps
+aws dynamodb --endpoint-url http://localhost:8000 create-table --table-name meat_tb \
+	--attribute-definitions \
+		AttributeName=meat_name,AttributeType=S \
+	--key-schema \
+		AttributeName=meat_name,KeyType=HASH \
+	--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+aws dynamodb --endpoint-url http://localhost:8000 create-table --table-name purchase_tb \
+	--attribute-definitions \
+		AttributeName=purchase_id,AttributeType=S \
+	--key-schema AttributeName=purchase_id,KeyType=HASH \
+	--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+aws dynamodb --endpoint-url http://localhost:8000 create-table --table-name sale_tb \
+	--attribute-definitions \
+		AttributeName=sale_id,AttributeType=S \
+	--key-schema AttributeName=sale_id,KeyType=HASH \
+	--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
