@@ -1,21 +1,28 @@
 #! /bin/bash
-sudo su
-
-apt-get update
-apt-get remove docker docker-engine docker.io containerd runc
-apt-get install \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-chmod a+r /etc/apt/keyrings/docker.gpg
-apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
-service docker start
+sudo apt update
+sudo apt install apt-transport-https curl gnupg-agent ca-certificates software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+sudo apt install docker-ce docker-ce-cli containerd.io -y
+sudo usermod -aG docker $USER
+newgrp docker
+sudo systemctl start docker
+sudo systemctl enable docker
 docker run hello-world
-
+mkdir ~/deploy
+cd ~/deploy
+echo -e \
+"version: '3.8' \n\
+services: \n\
+  dynamodb-local: \n\
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data" \n\
+    image: "amazon/dynamodb-local:latest" \n\
+    container_name: dynamodb-local \n\
+    ports: \n\
+      - "8000:8000" \n\
+    volumes: \n\
+      - "./docker/dynamodb:/home/dynamodblocal/data" \n\
+    working_dir: /home/dynamodblocal" > docker-compose.yml
+sudo apt-get install -y docker-compose-plugin
+docker compose up -d
+docker ps

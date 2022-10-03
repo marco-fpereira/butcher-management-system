@@ -48,7 +48,8 @@ resource "aws_instance" "prd-blocking-application" {
   }
   vpc_security_group_ids    = [
     "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}"
+    "${aws_security_group.http_access.id}",
+    "sg-0be9ad045e4d5b5d1"
   ]
 
   iam_instance_profile      = aws_iam_instance_profile.ec2_profile.name
@@ -67,6 +68,7 @@ resource "aws_instance" "prd-blocking-application" {
   }
 
   user_data                 = "${file("user-data-app.sh")}"
+  depends_on = [aws_security_group.http_access, aws_security_group.ssh_access-1]
 }
 
  resource "aws_instance" "prd-reactive-application" {
@@ -79,7 +81,8 @@ resource "aws_instance" "prd-blocking-application" {
   }
   vpc_security_group_ids    = [
     "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}"
+    "${aws_security_group.http_access.id}",
+    "sg-0be9ad045e4d5b5d1"
   ]
   iam_instance_profile      = aws_iam_instance_profile.ec2_profile.name
   
@@ -97,6 +100,8 @@ resource "aws_instance" "prd-blocking-application" {
   }
 
   user_data                 = "${file("user-data-app.sh")}"
+  depends_on = [aws_security_group.http_access, aws_security_group.ssh_access-1]
+
 }
 
 resource "aws_instance" "prd-appdynamics-db" {
@@ -109,7 +114,8 @@ resource "aws_instance" "prd-appdynamics-db" {
   }
   vpc_security_group_ids    = [
     "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.appdynamics_access.id}"
+    "${aws_security_group.appdynamics_access.id}",
+    "sg-0be9ad045e4d5b5d1"
   ]
 
 
@@ -127,4 +133,6 @@ resource "aws_instance" "prd-appdynamics-db" {
   }
 
   user_data                 = "${file("user-data-db.sh")}"
+  depends_on = [aws_security_group.appdynamics_access, aws_security_group.ssh_access-1]
+
 }
