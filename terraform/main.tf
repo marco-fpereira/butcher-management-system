@@ -43,6 +43,9 @@ resource "aws_instance" "prd-blocking-application" {
   ami                       = "${var.amis["us-east-1"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
+  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+  associate_public_ip_address = true
+
   tags = {
     Name                    = "prd-blocking-application"
   }
@@ -76,6 +79,9 @@ resource "aws_instance" "prd-blocking-application" {
   ami                       = "${var.amis["us-east-1"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
+  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+  associate_public_ip_address = true
+
   tags = {
       Name                  = "prd-reactive-application"
   }
@@ -109,6 +115,8 @@ resource "aws_instance" "prd-appdynamics-db" {
   ami                       = "${var.amis["us-east-1"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
+  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+  associate_public_ip_address = true
   tags = {
       Name                  = "prd-appdynamics-db"
   }

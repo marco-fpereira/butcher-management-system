@@ -8,3 +8,5 @@ aws:
       butcher: "meat_tb"
       purchase: "purchase_tb"
       sale: "sale_tb"
+server:
+  port: 8080
