@@ -1,6 +1,6 @@
-# Criação da VPC
+/* # Criação da VPC
 resource "aws_vpc" "internet_access_vpc" {
-  cidr_block = "172.0.0.0/8"
+  cidr_block = "172.0.0.0/16"
   enable_dns_hostnames = true
 
   tags = {
@@ -11,7 +11,7 @@ resource "aws_vpc" "internet_access_vpc" {
 # Criação da Subnet Pública
 resource "aws_subnet" "internet_access_public_subnet" {
   vpc_id                    = aws_vpc.internet_access_vpc.id
-  cidr_block                = "172.0.0.0/8"
+  cidr_block                = "172.0.0.0/16"
   map_public_ip_on_launch   = true
 
   tags = {
@@ -53,4 +53,4 @@ resource "aws_route" "internet_access_routetointernet" {
 resource "aws_route_table_association" "internet_access_pub_association" {
   subnet_id      = aws_subnet.internet_access_public_subnet.id
   route_table_id = aws_route_table.internet_access_rt.id
-}
+} */

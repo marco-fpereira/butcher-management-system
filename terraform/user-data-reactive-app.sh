@@ -8,8 +8,11 @@ export PATH=$PATH:$JAVA_HOME/bin
 java -version
 mkdir ~/deploy
 cd ~/deploy
-sudo apt install unzip -y
-curl -LJO https://github.com/marco-fpereira/butcher-management-system/archive/refs/heads/main.zip
-unzip butcher-management-system-main.zip
-cd butcher-management-system-main/reactive-butcher
-java -jar -Dspring.profiles.active=PROD executable/reactive-butcher-0.0.1-SNAPSHOT.jar
+sudo apt install maven -y
+sudo apt install git -y
+git clone https://github.com/marco-fpereira/butcher-management-system.git
+git checkout infra-terraform-creation
+cd butcher-management-system/reactive-butcher
+mvn clean install
+mvn packege
+java -jar -Dspring.profiles.active=PROD target/reactive-butcher-0.0.1-SNAPSHOT.jar

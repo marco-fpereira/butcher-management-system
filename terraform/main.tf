@@ -43,15 +43,16 @@ resource "aws_instance" "prd-blocking-application" {
   ami                       = "${var.amis["us-east-1"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
-  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+/*
+   subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
   associate_public_ip_address = true
-
+ */
   tags = {
     Name                    = "prd-blocking-application"
   }
   vpc_security_group_ids    = [
-    "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}",
+    /*"${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,*/
     "sg-0be9ad045e4d5b5d1"
   ]
 
@@ -86,8 +87,8 @@ resource "aws_instance" "prd-blocking-application" {
       Name                  = "prd-reactive-application"
   }
   vpc_security_group_ids    = [
-    "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}",
+    /*"${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,*/
     "sg-0be9ad045e4d5b5d1"
   ]
   iam_instance_profile      = aws_iam_instance_profile.ec2_profile.name
@@ -121,8 +122,8 @@ resource "aws_instance" "prd-appdynamics-db" {
       Name                  = "prd-appdynamics-db"
   }
   vpc_security_group_ids    = [
-    "${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.appdynamics_access.id}",
+    /*"${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,*/
     "sg-0be9ad045e4d5b5d1"
   ]
 
