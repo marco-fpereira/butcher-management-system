@@ -11,3 +11,10 @@ output ips-reactive {
   description = "description"
   depends_on  = []
 }
+
+output ips-appdynamics-db {
+  value       = "${aws_instance.prd-appdynamics-db[*].public_ip}"
+  sensitive   = false
+  description = "description"
+  depends_on  = []
+}

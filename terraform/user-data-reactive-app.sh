@@ -1,4 +1,5 @@
 #! /bin/bash
+export DATABASE_URL=${aws_instance.prd-appdynamics-db[*].public_ip}
 sudo apt update
 sudo chmod +x /tmp/setup-environment
 sudo apt install -y openjdk-17-jdk
