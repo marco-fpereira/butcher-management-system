@@ -8,8 +8,8 @@ terraform {
 }
 
 provider "aws" {
-  alias                     = "us-east-1"
-  region                    = "us-east-1"
+  alias                     = "us-east-2"
+  region                    = "us-east-2"
 }
 
 resource "aws_iam_role" "iam_for_ec2" {
@@ -39,21 +39,21 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 }
 
 resource "aws_instance" "prd-blocking-application" {
-  provider                  = aws.us-east-1
-  ami                       = "${var.amis["us-east-1"]}"
+  provider                  = aws.us-east-2
+  ami                       = "${var.amis["us-east-2"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
-/*
-   subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+
+#  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
   associate_public_ip_address = true
- */
+
   tags = {
     Name                    = "prd-blocking-application"
   }
   vpc_security_group_ids    = [
-    /*"${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}" ,*/
-    "sg-0be9ad045e4d5b5d1"
+    "${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,
+    "sg-02484ea4bc12aa803" #"sg-0be9ad045e4d5b5d1"
   ]
 
   iam_instance_profile      = aws_iam_instance_profile.ec2_profile.name
@@ -65,7 +65,7 @@ resource "aws_instance" "prd-blocking-application" {
     connection {
       type                  = "ssh"
       agent                 = false
-      private_key           = "${file("~/.ssh/terraform.pem")}"
+      private_key           = "${file("~/.ssh/terraform2.pem")}"
       user                  = "ubuntu"
       host                  = "${aws_instance.prd-blocking-application.public_ip}"
     }
@@ -76,22 +76,22 @@ resource "aws_instance" "prd-blocking-application" {
 }
 
  resource "aws_instance" "prd-reactive-application" {
-  provider                  = aws.us-east-1
-  ami                       = "${var.amis["us-east-1"]}"
+  provider                  = aws.us-east-2
+  ami                       = "${var.amis["us-east-2"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
-/*
-   subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+
+#  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
   associate_public_ip_address = true
- */
+
 
   tags = {
       Name                  = "prd-reactive-application"
   }
   vpc_security_group_ids    = [
-    /*"${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}" ,*/
-    "sg-0be9ad045e4d5b5d1"
+    "${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,
+    "sg-02484ea4bc12aa803" #"sg-0be9ad045e4d5b5d1"
   ]
   iam_instance_profile      = aws_iam_instance_profile.ec2_profile.name
   
@@ -102,7 +102,7 @@ resource "aws_instance" "prd-blocking-application" {
     connection {
       type                  = "ssh"
       agent                 = false
-      private_key           = "${file("~/.ssh/terraform.pem")}"
+      private_key           = "${file("~/.ssh/terraform2.pem")}"
       user                  = "ubuntu"
       host                  = "${aws_instance.prd-reactive-application.public_ip}"
     }
@@ -114,21 +114,21 @@ resource "aws_instance" "prd-blocking-application" {
 }
 
 resource "aws_instance" "prd-appdynamics-db" {
-  provider                  = aws.us-east-1
-  ami                       = "${var.amis["us-east-1"]}"
+  provider                  = aws.us-east-2
+  ami                       = "${var.amis["us-east-2"]}"
   instance_type             = "${var.instance_type}"
   key_name                  = "${var.key_name}"
-/*
-   subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
+
+#  subnet_id                 = "${aws_subnet.internet_access_public_subnet.id}"
   associate_public_ip_address = true
- */
+
   tags = {
       Name                  = "prd-appdynamics-db"
   }
   vpc_security_group_ids    = [
-    /*"${aws_security_group.ssh_access-1.id}",
-    "${aws_security_group.http_access.id}" ,*/
-    "sg-0be9ad045e4d5b5d1"
+    "${aws_security_group.ssh_access-1.id}",
+    "${aws_security_group.http_access.id}" ,
+    "sg-02484ea4bc12aa803" #"sg-0be9ad045e4d5b5d1"
   ]
 
 
@@ -139,7 +139,7 @@ resource "aws_instance" "prd-appdynamics-db" {
     connection {
       type                  = "ssh"
       agent                 = false
-      private_key           = "${file("~/.ssh/terraform.pem")}"
+      private_key           = "${file("~/.ssh/terraform2.pem")}"
       user                  = "ubuntu"
       host                  = "${aws_instance.prd-appdynamics-db.public_ip}"
     }

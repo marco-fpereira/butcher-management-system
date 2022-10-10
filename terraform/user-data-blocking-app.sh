@@ -1,4 +1,7 @@
 #! /bin/bash
+sudo su
+chmod +777 .
+su ubuntu
 export DATABASE_URL=${aws_instance.prd-appdynamics-db[*].public_ip}
 sudo apt update
 sudo chmod +x /tmp/setup-environment
@@ -8,6 +11,9 @@ echo $JAVA_HOME
 export PATH=$PATH:$JAVA_HOME/bin
 java -version
 mkdir ~/deploy
+sudo su
+chmod +777 ~/deploy
+su ubuntu
 cd ~/deploy
 sudo apt install maven -y
 sudo apt install git -y
