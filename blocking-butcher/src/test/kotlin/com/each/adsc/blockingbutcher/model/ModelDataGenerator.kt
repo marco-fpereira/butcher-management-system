@@ -60,8 +60,7 @@ class ModelDataGenerator {
         fun generateSaleDTO() = SaleDTO(
             saleId = "cff845bf-0065-4c74-9023-c0555924659e",
             meatName = "rump steak",
-            amount = 10.0,
-            totalPrice = 10.0*1.35,
+            amount = 15.5,
             typeOfCut = "whole",
             saleTimestamp = LocalDateTime.now()
         )

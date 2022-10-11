@@ -28,11 +28,12 @@ class ButcherControllerTest{
 
     @Test
     fun `get meat list when it is ok`() {
-        val meatList = listOf(meatDTO)
+        val meatList = listOf(meatDTO, meatDTO)
         every { butcherService.getAllMeat() } returns (meatList)
 
         val result = butcherController.getMeatList()
         assertEquals(result.statusCodeValue, 200)
+        assertEquals(result.body!!.size, 2)
     }
 
     @Test
@@ -41,6 +42,7 @@ class ButcherControllerTest{
 
         val result = butcherController.getCurrentMeatInfo(meatDTO.name)
         assertEquals(result.statusCodeValue, 200)
+        assertEquals(result.body!!.name, meatDTO.name)
     }
 
 }

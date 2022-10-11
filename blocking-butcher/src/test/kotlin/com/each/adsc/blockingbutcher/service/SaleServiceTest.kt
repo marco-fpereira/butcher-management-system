@@ -1,6 +1,7 @@
 package com.each.adsc.blockingbutcher.service
 
 import com.each.adsc.blockingbutcher.model.ModelDataGenerator
+import com.each.adsc.blockingbutcher.model.dto.SaleDTO
 import com.each.adsc.blockingbutcher.repository.ButcherRepository
 import com.each.adsc.blockingbutcher.repository.SaleRepository
 import io.mockk.MockKAnnotations
@@ -32,7 +33,7 @@ class SaleServiceTest {
 
     @Test
     fun `sale meat when it is found and available amount is greater than customer wants to buy`() {
-        meat.availableAmountInKilograms = 15.0  // saleDTO has 10.0 of amount
+        meat.availableAmountInKilograms = 20.0
         every { butcherRepository.findById(saleDTO.meatName) } returns (Optional.of(meat))
         every { butcherRepository.save(any()) } returns ModelDataGenerator.generateMeat()
         every { saleRepository.save(any()) } returns ModelDataGenerator.generateSale()
@@ -48,6 +49,11 @@ class SaleServiceTest {
 
         val result = saleService.saleMeat(saleDTO)
         assertEquals(result.statusCodeValue, 412)
+        assertEquals(
+        "The amount of meat you requested is not currently available. " +
+                "Current stock is ${meat.availableAmountInKilograms}.",
+            result.body
+        )
     }
 
     @Test

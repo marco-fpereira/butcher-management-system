@@ -1,6 +1,7 @@
 package com.each.adsc.blockingbutcher.service
 
 import com.each.adsc.blockingbutcher.model.ModelDataGenerator
+import com.each.adsc.blockingbutcher.model.dto.MeatDTO
 import com.each.adsc.blockingbutcher.repository.ButcherRepository
 import com.each.adsc.blockingbutcher.repository.PurchaseRepository
 import com.each.adsc.blockingbutcher.utils.ObjectParser
@@ -33,21 +34,28 @@ class PurchaseServiceTest {
 
     @Test
     fun `insert new meat when it does not exist already`() {
-        every { butcherRepository.findById(purchaseDTO.meatName) } returns (Optional.of(meat))
-        every { butcherRepository.save(any()) } returns ModelDataGenerator.generateMeat()
+        every { butcherRepository.findById(purchaseDTO.meatName) } returns (Optional.empty())
+        every { butcherRepository.save(any()) } returns meat
         every { purchaseRepository.save(any()) } returns ModelDataGenerator.generatePurchase()
 
         val result = purchaseService.purchaseMeat(purchaseDTO)
         assertEquals(result.statusCodeValue, 201)
+        val meatDTOResult = result.body as MeatDTO
+        assertEquals(purchaseDTO.amountBought, meatDTOResult.availableAmountInKilograms)
     }
 
     @Test
     fun `insert new meat when it already exists`() {
-        every { butcherRepository.findById(purchaseDTO.meatName) } returns (Optional.empty())
-        every { butcherRepository.save(any()) } returns ModelDataGenerator.generateMeat()
+        every { butcherRepository.findById(purchaseDTO.meatName) } returns (Optional.of(meat))
+        every { butcherRepository.save(any()) } returns meat
         every { purchaseRepository.save(any()) } returns ModelDataGenerator.generatePurchase()
 
         val result = purchaseService.purchaseMeat(purchaseDTO)
         assertEquals(result.statusCodeValue, 201)
+        val meatDTOResult = result.body as MeatDTO
+        assertEquals(
+            meat.availableAmountInKilograms,
+            meatDTOResult.availableAmountInKilograms
+        )
     }
 }

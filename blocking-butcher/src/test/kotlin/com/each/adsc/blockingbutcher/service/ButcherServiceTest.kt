@@ -34,8 +34,9 @@ class ButcherServiceTest{
 
         every { butcherRepository.findById(meat.meatName) } returns (optionalMeat)
 
-        val meatName = butcherService.getByMeatName(meat.meatName)
-        assertEquals(meatName.statusCodeValue, 200)
+        val result = butcherService.getByMeatName(meat.meatName)
+        assertEquals(result.statusCodeValue, 200)
+        assertEquals(result.body!!.name, meat.meatName)
     }
 
     @Test
@@ -43,7 +44,8 @@ class ButcherServiceTest{
         val optionalMeat = Optional.empty<Meat>()
 
         every { butcherRepository.findById(meat.meatName) } returns (optionalMeat)
-        assertThrows<ValueNotFoundException> { butcherService.getByMeatName(meat.meatName) }
+        val assertThrows = assertThrows<ValueNotFoundException> { butcherService.getByMeatName(meat.meatName) }
+        assertEquals("There is not any meat named ${meat.meatName}", assertThrows.errorResponseDTO.message)
     }
 
     @Test
